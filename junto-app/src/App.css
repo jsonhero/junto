@@ -1,3 +1,8 @@
+.editor {
+    background: #fff;
+    padding: 15px;
+}
+
 .App {
     text-align: center;
 }
@@ -14,6 +19,33 @@
     color: white;
 }
 
+.pop {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px;
+}
+
+.pop-content {}
+
+
+/* .pop-tri {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #f00;
+} */
+
+.popover {
+    z-index: 10;
+    position: absolute;
+    transform-origin: bottom center;
+    width: 150px;
+    height: 50px;
+    background-color: pink;
+    transform: scale(1, 1);
+    /* width: */
+}
+
 .App-title {
     font-size: 1.5em;
 }
@@ -24,9 +56,16 @@
 
 .AppName {
     text-align: center;
-    margin-top: 50px;
+    margin: 50px auto;
     font-size: 32px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
+    font-family: 'Fredoka One', cursive;
+    width: 270px;
+    background-color: #FC8A75;
+    box-shadow: 0 0 0 0.75pt #1E9AA6, 0 0 3pt 0.75pt #1E9AA6;
+    color: #F5CC69;
+    height: 50px;
+    line-height: 50px;
 }
 
 @keyframes App-logo-spin {
@@ -38,20 +77,24 @@
     }
 }
 
-.highlight {
+.junto-tag {
     background-color: rgb(244, 255, 146);
-    width: 10px;
-    height: 10px;
+    /* width: 10px; */
+    /* height: 10px; */
+}
+
+.junto-other-tag {
+    border-bottom: 1px solid green;
 }
 
 html,
 body {
-    background-color: rgb(238, 238, 238);
+    background-color: #42A4AA;
 }
 
 .editor {
     text-align: left;
-    cursor: text;
+    /* cursor: text; */
     background-color: rgb(255, 255, 255);
     width: 716px;
     height: 1056px;
@@ -60,7 +103,7 @@ body {
     overflow: hidden;
     position: relative;
     white-space: normal;
-    box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+    box-shadow: 0 0 0 0.75pt #1E9AA6, 0 0 3pt 0.75pt #1E9AA6;
     padding: 75px 70px 75px 70px;
     outline: none;
 }

@@ -1,4 +1,6 @@
 import React from "react";
+// import Popover from './Popover';
+import Popover from '@material-ui/core/Popover';
 
 
 function getWord() {
@@ -46,9 +48,26 @@ function createSymbol() {
     custRange.collapse(true);
     sel.removeAllRanges();
     sel.addRange(custRange);
+    return span;
 }
 
+{/* <div>
+    <span>@</span> blah blah blah
+    <div>blippity blah blah blah</div>
+    <div>hippity bippity boppity</div>
+</div>
+
+<div><span>@</span><span>testy test testy</span></div>
+<div><span>testy test test</span> this part is outside it</div> */}
+
 class InputReader extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            el: null,
+        }
+    }
 
     onFocus = (e) => {
     }
@@ -68,9 +87,15 @@ class InputReader extends React.Component {
             // console.log('wee');
             // document.execCommand('formatBlock', false, )
             // getWord()
-            createSymbol();
+            const el = createSymbol();
+            console.log(el, "element")
+            this.setState({ el })
             e.preventDefault();
         }
+    }
+
+    onClose = () => {
+        this.setState({ el: null });
     }
 
     onKeyUp = (e) => {
@@ -78,7 +103,7 @@ class InputReader extends React.Component {
 
         if (e.key === '@') {
             // document.execCommand('formatBlock', false, )
-            getWord()
+            getWord();
         }
     }
 
@@ -95,6 +120,25 @@ class InputReader extends React.Component {
             <div>
                 <div className="editor" id="editor" contentEditable {...eventHandlers}>
                 </div>
+                <Popover
+                    open={Boolean(this.state.el)}
+                    onClose={this.onClose}
+                    anchorEl={this.state.el} 
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    disableAutoFocus={true}
+                >
+                <div className="pop">
+                    <input type="text" />
+                    <div className="pop-content">Bunch of stuff</div>
+                </div>
+                </Popover>
                 <button onClick={this.onClick}>Make Bold</button>
             </div>
         )
