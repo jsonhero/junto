@@ -7,7 +7,9 @@
     "draft-js": "^0.10.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "slate": "^0.34.7",
+    "slate-react": "^0.13.4"
   },
   "scripts": {
     "start": "react-scripts start",
