@@ -5,7 +5,7 @@ const {hasCommandModifier} = KeyBindingUtil;
 
 const Tag = props => {
   return (
-    <span className="junto-tag">
+    <span className="junto-tag" readOnly>
         {props.children}
     </span>
   )
@@ -57,16 +57,15 @@ const decorator = new CompositeDecorator([{
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
-    const editor = EditorState.createEmpty();
-    const myState = EditorState.set(editor, { decorator: decorator })
+    const editor = EditorState.createEmpty({});
+    const myState = EditorState.set(editor, {})
     this.state = {
       editorState: myState,
       tags: {},
       currentlyEditableTag: null,
     };
     this.onChange = (editorState) => {
-      console.log(editorState.getSelection(), 'selectionState');
-
+      // console.log(editorState.getSelection(), 'selectionState');
       this.setState({editorState})
     };
 
@@ -125,7 +124,7 @@ class MyEditor extends React.Component {
     const currentContent = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const entityKey = Entity.create('START-TAG', 'IMMUTABLE', { meta: 'blah' });
-    const textWithEntity = Modifier.insertText(currentContent, selection, '@', null, entityKey);
+    const textWithEntity = Modifier.insertText(currentContent, selection, 'Tag', null, entityKey);
 
     const newEditorState = EditorState.push(editorState, textWithEntity, 'insert-characters');
     // const newContent = newEditorState.getCurrentContent();
@@ -145,8 +144,23 @@ class MyEditor extends React.Component {
       return state;
     }, () => {
         this.focus();
+        const selection = this.state.editorState.getSelection();
+        console.log(selection.anchorOffset, selection.focusOffset, 'herp');
+        const editorSelection = selection.merge({
+          anchorOffset: selection.anchorOffset + 10,
+          focusOffset: selection.focusOffset + 10,
+        });
+        const newState = EditorState.acceptSelection(this.state.editorState, editorSelection);
+        const newerState = EditorState.forceSelection(newState, newState.getSelection())
+        this.setState({ editorState: newerState }, () => console.log('state settt'));
         console.log(this.state, 'state');
     });
+  }
+
+  handleEscape = (e) => {
+    this.setState({
+      currentlyEditableTag: null,
+    })
   }
 
 
@@ -157,9 +171,14 @@ class MyEditor extends React.Component {
   onTest = () => {
     // const content = this.state.editorState.getCurrentContent();
     // console.log(convertToRaw(content))
-    const myEntity = this.state.editorState.getCurrentContent().getEntity(this.state.tags[this.state.currentlyEditableTag].tagEntity);
-    console.log(myEntity, 'eneity')
-
+    // const myEntity = this.state.editorState.getCurrentContent().getEntity(this.state.tags[this.state.currentlyEditableTag].tagEntity);
+    // console.log(myEntity, 'eneity')
+    const selection = this.state.editorState.getSelection();
+    const editorSelection = selection.merge({
+      anchorKey: 2,
+    });
+    const editorState = EditorState.forceSelection(this.state.editorState, editorSelection);
+    this.setState({ editorState });
   }
 
   render() {
@@ -168,12 +187,13 @@ class MyEditor extends React.Component {
       <button onClick={this.onTest}>Test</button>
         <Editor
           ref={this.editor}
-          handleBeforeInput={this.handleBeforeInput}
+          // onEscape={this.handleEscape}
+          // handleBeforeInput={this.handleBeforeInput}
           placeholder="Start typing..."
           editorState={this.state.editorState}
           onChange={this.onChange}
-          handleKeyCommand={this.handleKeyCommand}
-          keyBindingFn={this.myKeyBindingFn}
+          // handleKeyCommand={this.handleKeyCommand}
+          // keyBindingFn={this.myKeyBindingFn}
         />
       </div>
     );

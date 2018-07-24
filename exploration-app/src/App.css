@@ -78,13 +78,22 @@
 }
 
 .junto-tag {
-    background-color: rgb(244, 255, 146);
-    /* width: 10px; */
-    /* height: 10px; */
+    background-color: rgb(181, 255, 216);
+    font-size: 12px;
+    text-align: center;
+    width: 5.95ch;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 4px;
+    /* margin-right: 3px; */
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
 }
 
 .junto-other-tag {
-    border-bottom: 1px solid green;
+    background-color: #eafff4;
 }
 
 html,
