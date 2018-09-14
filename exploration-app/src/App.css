@@ -1,10 +1,12 @@
 .editor {
     background: #fff;
-    padding: 15px;
 }
 
+.hash-tag {
+    /* outline: black; */
+    border: 1px solid black
+}
 .App {
-    text-align: center;
 }
 
 .App-logo {
@@ -102,7 +104,8 @@
 
 html,
 body {
-    background-color: #42A4AA;
+    background-color: #EBEBEB;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .editor {
@@ -110,13 +113,13 @@ body {
     /* cursor: text; */
     background-color: rgb(255, 255, 255);
     width: 716px;
-    height: 1056px;
-    margin: 50px auto;
+    height: 120px;
+    /* margin: 50px auto; */
     cursor: text;
     overflow: hidden;
     position: relative;
     white-space: normal;
-    box-shadow: 0 0 0 0.75pt #1E9AA6, 0 0 3pt 0.75pt #1E9AA6;
-    padding: 75px 70px 75px 70px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5);
+    padding: 20px;
     outline: none;
 }

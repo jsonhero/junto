@@ -1,6 +1,6 @@
 import React from 'react';
 import { Editor } from 'slate-react'
-import { Value } from 'slate'
+import { Value, Text } from 'slate'
 
 function CodeNode(props) {
   return (
@@ -14,12 +14,24 @@ function BoldMark(props) {
   return <strong>{props.children}</strong>
 }
 
+function HashTagSpan(props) {
+  return <span className="hash-tag" {...props.attributes}>####{props.children}</span>
+}
+
 function TagNode({ attributes, children }) {
   return (
     <div className="tag-node" {...attributes}>
       {children}
     </div>
   );
+}
+
+const schema = {
+  inlines: {
+    hashtag: {
+      isVoid: false,
+    },
+  },
 }
 
 const initialValue = Value.fromJSON({
@@ -89,21 +101,45 @@ class SlateEditor extends React.Component {
     const { value } = change;
     // Return with no changes if the keypress is not '&'
     // Decide what to do based on the key code...
-    console.log(event.key, 'key');
+    // console.log(event.key, 'key');
+    // console.log('blocks', value.document.getBlocks())
+    // console.log('text', value.document.getPreviousText())
 
     switch (event.key) {
       // When "B" is pressed, add a "bold" mark to the text.
+      case 'Escape': {
+      }
       case '#': {
-        event.preventDefault()
-        const tagParent = getTagParent(value);
-        if (tagParent) {
-          // const child = value.document.getChild(tagParent.key)
-          // console.log(tagParent.key, child, 'child');
-          change.unwrapBlockByKey(tagParent.key);
-          return true;
-        }
-        change.call(wrapTag)
-        return true
+        event.preventDefault();
+        // const tagParent = getTagParent(value);
+        // if (tagParent) {
+        //   // const child = value.document.getChild(tagParent.key)
+        //   // console.log(tagParent.key, child, 'child');
+        //   change.unwrapBlockByKey(tagParent.key);
+        //   return true;
+        // }
+        // change.call(wrapTag)
+        change.insertInline({
+          data: { label: 'name' },
+          type: 'hashtag',
+          isVoid: false,
+          nodes: [
+            {
+              object: "text",
+              leaves: [
+                {
+                  object: "leaf",
+                  text: " ", // Must has 1 space here to see the input
+                  marks: []
+                }
+              ]
+            }
+         ],
+        })
+        .insertText("Test")
+        .moveAnchorToEndOfInline()
+        // .moveBackward()
+        return true;
       }
     }
   }
@@ -111,17 +147,21 @@ class SlateEditor extends React.Component {
   render() {
     return (
       <div className="editor">
-        <Editor value={this.state.value} onChange={this.onChange} onKeyDown={this.onKeyDown} renderNode={this.renderNode} renderMark={this.renderMark} />
+        <Editor schema={schema} value={this.state.value} onChange={this.onChange} onKeyDown={this.onKeyDown} renderNode={this.renderNode} renderMark={this.renderMark} />
       </div>
     );
   }
 
   renderNode = (props) => {
+    console.log(props.node, 'node')
+    console.log(props.node.type, 'type')
     switch (props.node.type) {
       case 'code':
         return <CodeNode {...props} />
       case 'tag':
         return <TagNode {...props} />
+      case 'hashtag':
+        return <HashTagSpan {...props} />
     }
   }
 
